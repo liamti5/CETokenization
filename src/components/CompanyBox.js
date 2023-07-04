@@ -6,15 +6,15 @@ import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PriceChangeIcon from '@mui/icons-material/PriceChange';
 import GetAppIcon from '@mui/icons-material/GetApp';
-import AnnouncementIcon from '@mui/icons-material/Announcement';
+import ChangeDeputy from '@mui/icons-material/ChangeDeputy';
 import abi from '../contracts/abi.json';
-import BurnMint from '../components/BurnMint';
-import Offering from '../components/Offering';
+import Raise from './Raise';
+import Offering from './Recovery';
 import Pause from '../components/Pause';
-import ChangePrice from '../components/ChangePrice';
+import ChangePrice from './Destroy';
 import Withdraw from '../components/Withdraw';
-import Announcement from '../components/Announcement';
-import PayDividends from '../components/PayDividends';
+import Announcement from './ChangeDeputy';
+import PayDividends from './Transfer';
 
 const CompanyBox = () => {
   const [selectedOption, setSelectedOption] = useState('burnMint');  
@@ -65,22 +65,22 @@ const CompanyBox = () => {
     <div>
         <div className={styles.rectangle}>
           <div className={styles.blackBox}>
-            <button className={styles.button} onClick={() => setSelectedOption('burnMint')}><WhatshotIcon /> Burn/Mint</button>
+            <button className={styles.button} onClick={() => setSelectedOption('burnMint')}><WhatshotIcon /> Raise</button>
             <button className={styles.button} onClick={() => setSelectedOption('pauseUnpause')}><PauseIcon /> Pause/Unpause</button>
             <button className={styles.button} onClick={() => setSelectedOption('startStopOffering')}><PlayArrowIcon/> Start/Stop Offering</button>
             <button className={styles.button} onClick={() => setSelectedOption('changePrice')}><PriceChangeIcon /> Change Price</button>
             <button className={styles.button} onClick={() => setSelectedOption('payDividends')}><PriceChangeIcon /> Dividends</button>
             <button className={styles.button} onClick={() => setSelectedOption('withdraw')}><GetAppIcon /> Withdraw</button>
-            <button className={styles.button} onClick={() => setSelectedOption('announcement')}><AnnouncementIcon /> Announcement</button>
+            <button className={styles.button} onClick={() => setSelectedOption('announcement')}><AnnouncementIcon /> Change Deputy</button>
           </div>
           <div className={styles.contentArea}>
-            {selectedOption === 'burnMint' && (<BurnMint web3={web3} account={account} contract={contract} />)}
+            {selectedOption === 'burnMint' && (<Raise web3={web3} account={account} contract={contract} />)}
             {selectedOption === 'pauseUnpause' && (<Pause web3={web3} account={account} contract={contract} />)}
             {selectedOption === 'startStopOffering' && (<Offering web3={web3} account={account} contract={contract} />)}
             {selectedOption === 'changePrice' && (<ChangePrice web3={web3} account={account} contract={contract} />)}
             {selectedOption === 'payDividends' && (<PayDividends web3={web3} account={account} contract={contract} />)}
             {selectedOption === 'withdraw' && (<Withdraw web3={web3} account={account} contract={contract} />)}
-            {selectedOption === 'announcement' && (<Announcement web3={web3} account={account} contract={contract} />)}
+            {selectedOption === 'announcement' && (<ChangeDeputy web3={web3} account={account} contract={contract} />)}
           </div>
         </div>
     </div>

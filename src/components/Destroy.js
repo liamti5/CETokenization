@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import styles from '../styles/CompanyBox.module.css';
 
-const Offering = ({ web3, account, contract }) => {
+const Destroy = ({ web3, account, contract }) => {
     var [price, setPrice] = useState(0);
 
     const handleChange = (e) => {
@@ -13,18 +13,17 @@ const Offering = ({ web3, account, contract }) => {
     const handleSetPrice = async () => {
         if (price < 0) return;
         try {
-            price = web3.utils.toWei(price, 'ether');
-            await contract.methods.changePrice(price).send({ from: account });
+            await contract.methods.destroy(price).send({ from: account });
         } catch (err) {
             console.error(err);
         }
     };
     return (
         <div className={styles.container}>
-                <h1>Change Price</h1>
+                <h1>Destroy</h1>
                 <TextField
                     id="filled-number"
-                    label="Price"
+                    label="Amount of shares"
                     type="number"
                     InputLabelProps={{
                         shrink: true,
@@ -43,11 +42,11 @@ const Offering = ({ web3, account, contract }) => {
                             width: '100%', 
                             mt: 1,
                         }}>
-                            Change Price
+                            Destroy
                     </Button>
                 </div>
         </div>
     );
 };
 
-export default Offering;
+export default Destroy;

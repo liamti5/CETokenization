@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import styles from '../styles/CompanyBox.module.css';
 
-const Offering = ({ web3, account, contract }) => {
+const ChangeDeputy = ({ web3, account, contract }) => {
     const [msg, setMsg] = useState("Enter your announcement here");
 
     
@@ -13,19 +13,17 @@ const Offering = ({ web3, account, contract }) => {
     
     const handleAnnouncement = async () => {
         try {
-            await contract.methods.announcement(msg).send({ from: account });
+            await contract.methods.changeDeputy(msg).send({ from: account });
         } catch (err) {
             console.error(err);
         }
     };
     return (
         <div>
-            <h1>Announcement</h1>
+            <h1>Change Deputy</h1>
             <TextField
                 id="outlined-multiline-static"
-                label="Input your announcement"
-                multiline
-                rows={4}
+                label="Input new deputy address"
                 defaultValue=""
                 className={styles.customTextField}
                 sx={{ 
@@ -41,11 +39,11 @@ const Offering = ({ web3, account, contract }) => {
                         width: '100%', 
                         mt: 1,
                     }}>
-                        Send Announcement
+                        Change Deputy
                 </Button>
             </div>
         </div>
     );
 };
 
-export default Offering;
+export default ChangeDeputy;

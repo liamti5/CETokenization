@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import styles from '../styles/CompanyBox.module.css';
 
-const BurnMint = ({ web3, account, contract }) => {
+const Raise = ({ web3, account, contract }) => {
     var [amount, setAmount] = useState(0);
 
     const handleChange = (e) => {
@@ -14,18 +14,7 @@ const BurnMint = ({ web3, account, contract }) => {
     const handleBurn = async () => {
         if (amount <= 0) return;
         try {
-            amount = web3.utils.toWei(amount, 'ether');
-            await contract.methods.burn(amount).send({ from: account });
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
-    const handleMint = async () => {
-        if (amount <= 0) return;
-        try {
-            amount = web3.utils.toWei(amount, 'ether');
-            await contract.methods.mint(account, amount).send({ from: account });
+            await contract.methods.raise(amount).send({ from: account });
         } catch (err) {
             console.error(err);
         }
@@ -34,7 +23,7 @@ const BurnMint = ({ web3, account, contract }) => {
     return (
         <Box>
             <div className={styles.container}>
-                <h1>Burn/Mint</h1>
+                <h1>Raise</h1>
                 <TextField
                     id="filled-number"
                     label="Number"
@@ -53,21 +42,10 @@ const BurnMint = ({ web3, account, contract }) => {
                         onClick={handleBurn}
                         className={styles.button}
                         sx={{ 
-                            width: { xs: '100%', sm: 'calc(50% - 8px)' }, 
-                            mt: 1,
-                            mr: { xs: 0, sm: 1 },                           
+                            width: { xs: '100%' }, 
+                            mt: 1                         
                         }}>
-                            Burn
-                    </Button>
-                    <Button 
-                        variant="contained"
-                        onClick={handleMint}
-                        className={styles.button}
-                        sx={{                            
-                            width: { xs: '100%', sm: '50%' }, 
-                            mt: 1,                           
-                        }}>
-                            Mint
+                            Raise
                     </Button>
                 </div>
             </div>
@@ -75,4 +53,4 @@ const BurnMint = ({ web3, account, contract }) => {
     );
 };
 
-export default BurnMint;
+export default Raise;

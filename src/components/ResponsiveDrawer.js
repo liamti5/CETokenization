@@ -29,13 +29,21 @@ import PriceChangeIcon from '@mui/icons-material/PriceChange';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 import abi from '../contracts/abi.json';
-import BurnMint from '../components/BurnMint';
-import Offering from '../components/Offering';
+import BurnMint from './Raise';
+import Offering from './Recovery';
 import Pause from '../components/Pause';
-import ChangePrice from '../components/ChangePrice';
+import ChangePrice from './Destroy';
 import Withdraw from '../components/Withdraw';
-import Announcement from '../components/Announcement';
-import PayDividends from '../components/PayDividends';
+import Announcement from './ChangeDeputy';
+import PayDividends from './Transfer';
+import TransferFrom from './TransferFrom';
+import Approve from './Approve';
+import MoneyIcon from '@mui/icons-material/Money';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
+import SendIcon from '@mui/icons-material/Send';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 const drawerWidth = 200;
 
@@ -47,16 +55,18 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const [selectedOption, setSelectedOption] = useState('Offering');
+  const [selectedOption, setSelectedOption] = useState('Raise');
 
   const iconMap = {
-    'Burn/Mint': <WhatshotIcon />,
+    'Raise': <MoneyIcon />,
+    'Destroy': <WhatshotIcon />,
     'Pause/Unpause': <PauseIcon />,
-    'Offering': <PlayArrowIcon />,
-    'Change Price': <PriceChangeIcon />,
-    'Dividends': <ShowChartIcon />,
-    'Withdraw': <GetAppIcon />,
-    'Announcement': <AnnouncementIcon />,
+    'Transfer': <PlayArrowIcon />,
+    'Recovery': <ChangeCircleIcon />,
+    'Transfer': <SendIcon />,
+    'Approve': <HowToRegIcon />,
+    'Transfer from': <FileUploadIcon />,
+    'Change Deputy': <SwitchAccountIcon />,
   };
 
   const drawer = (
@@ -64,7 +74,7 @@ function ResponsiveDrawer(props) {
       <Toolbar />
       <Divider />
       <List>
-        {['Burn/Mint', 'Pause/Unpause', 'Offering', 'Change Price', 'Dividends', 'Withdraw', 'Announcement'].map((text, index) => (
+        {['Raise', 'Pause/Unpause', 'Transfer', 'Approve', 'Transfer from', 'Recovery', 'Destroy', 'Change Deputy'].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton onClick={() => {
               setSelectedOption(text);
@@ -86,21 +96,23 @@ function ResponsiveDrawer(props) {
 
   const renderComponent = () => {
     switch (selectedOption) {
-      case 'Burn/Mint':
+      case 'Raise':
         return <BurnMint web3={web3} account={account} contract={contract} />;
       case 'Pause/Unpause':
         return <Pause web3={web3} account={account} contract={contract} />;
       case 'Pause/Unpause':
         return <Pause web3={web3} account={account} contract={contract} />;
-      case 'Offering':
+      case 'Recovery':
         return <Offering web3={web3} account={account} contract={contract} />;
-      case 'Change Price':
+      case 'Destroy':
         return <ChangePrice web3={web3} account={account} contract={contract} />;
-      case 'Dividends':
+      case 'Transfer':
         return <PayDividends web3={web3} account={account} contract={contract} />;
-      case 'Withdraw':
-        return <Withdraw web3={web3} account={account} contract={contract} />;
-      case 'Announcement':
+      case 'Approve':
+        return <Approve web3={web3} account={account} contract={contract} />;
+      case 'Transfer from':
+        return <TransferFrom web3={web3} account={account} contract={contract} />;
+      case 'Change Deputy':
         return <Announcement web3={web3} account={account} contract={contract} />;
       default:
       return null;

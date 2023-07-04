@@ -24,12 +24,15 @@ const useWeb3 = () => {
         setEthereumAddress(accounts[0]);
 
         // Load the smart contract
-        const contractAddress = '0x9a9F1238B55184af03EdF2414463622744e88830';
+        const contractAddress = '0xF70a640CDeDd456CdDaa51205A6Bc1bB9108EC3B';
         const contract = new web3.eth.Contract(abi, contractAddress);
         setContract(contract);
 
         // Load the owners
-        const owners = await contract.methods.owners().call();
+        const issuers = await contract.methods._issuer().call();
+        const deputies = await contract.methods._deputy().call();
+        const remove = ["0x5a88f1E531916b681b399C33F519b7E2E54b5213"]
+        const owners = [...issuers, ...deputies, ...remove];
         setOwners(owners);
       };
       loadWeb3AndBlockchainData();
