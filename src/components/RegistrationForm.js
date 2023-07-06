@@ -14,6 +14,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import Web3 from 'web3';
 
 
 const RegistrationForm = () => {
@@ -29,6 +30,7 @@ const RegistrationForm = () => {
   const [city, setCity] = useState('');
   const [differentAccount, setDifferentAccount] = useState('');
   const [nameError, setNameError] = useState(null);
+  const [recoverable, setRecoverable] = useState(false);
 
   useEffect(() => {
     setDifferentAccount(account || '');
@@ -86,7 +88,7 @@ const RegistrationForm = () => {
   };
 
   const typeOptions = ['Natural Person', 'Legal Entity'];
-  const countries = ['Switzerland', 'United States', 'Canada', 'United Kingdom', 'Australia']; // Add more countries as needed
+  const countries = ['Switzerland', 'Germany']; // Add more countries as needed
 
   const checkSanctionsList = async (name) => {
     const db = getDatabase();
@@ -106,7 +108,6 @@ const RegistrationForm = () => {
         isSanctioned = true;
       }
     });
-
     return isSanctioned;
   };
   
@@ -130,16 +131,30 @@ const RegistrationForm = () => {
       // Create a new user in the database with a unique ID
       const newUserRef = ref(database, 'users/');
       const newUser = push(newUserRef);
-      await set(newUser, { type, fullName, email, address, postCode, city, country, differentAccount });
-  
-      setType('');
-      setFullName('');
-      setEmail('');
-      setCountry('');
-      setAddress('');
-      setPostcode('');
-      setCity('');
-      setCountry('');
+      await set(newUser, { type, fullName, email, address, postCode, city, country, differentAccount, recoverable });
+
+      // register hash and address in smart contract
+      const hash = Web3.utils.keccak256(fullName + differentAccount);
+      console.log(hash);
+
+      console.log(recoverable);
+
+
+      try {
+        await contract.methods.register(hash, recoverable).send({ from: account });
+      }
+      catch (error) {
+        console.log(error);
+      }
+
+      // setType('');
+      // setFullName('');
+      // setEmail('');
+      // setCountry('');
+      // setAddress('');
+      // setPostcode('');
+      // setCity('');
+      // setCountry('');
       setError(null);
       setNameError(null);
       setSuccess('Registration successful!');
@@ -274,6 +289,15 @@ const RegistrationForm = () => {
               required control={<Checkbox sx={{ color: 'white' }}/>} 
               label="Switzerland is my only tax country" 
               sx={{ color: 'white' }}
+            />
+          </div>
+          <div>
+            <FormControlLabel 
+              control={<Checkbox sx={{ color: 'white' }}/>} 
+              label="I want my account to be recoverable" 
+              sx={{ color: 'white' }}
+              value={recoverable}
+              onChange={(e) => setRecoverable(e.target.checked)}
             />
           </div>
           <Button className={styles.button} type="submit" variant="contained" sx={{ width: '100%', mt: 2, mb: 2 }}>
