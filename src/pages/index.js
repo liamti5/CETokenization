@@ -1,11 +1,9 @@
 import React from 'react';
 import Company from '../components/Company';
 import AppBar from '../components/AppBar';
-import Unauthorized from '@/components/Unauthorized';
 import StatusBar from '../components/StatusBar';
 import useWeb3 from '../hooks/useWeb3';
 import Loading from '../components/Loading';
-import Link from 'next/link';
 
 export default function Home() {
   const { web3, account, contract, owners } = useWeb3();
@@ -16,22 +14,11 @@ export default function Home() {
     return <Loading />; // Render a loading page while owners data is loading
   }
 
-  const isOwner = owners.includes(account);
-
-  if (!isOwner) {
-    return (
-      <>
-        <AppBar />
-        <Unauthorized />
-      </>  
-    )
-  } else {
-      return (
-        <>
-          <AppBar />
-          <Company />
-          <StatusBar />
-        </>  
-      )
-    }
+  return (
+    <>
+      <AppBar />
+      <Company />
+      <StatusBar />
+    </>  
+  )
 }

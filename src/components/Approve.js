@@ -27,7 +27,7 @@ const Approve = ({ web3, account, contract }) => {
     
     return (
         <div className={styles.container}>
-                <h1>Transfer</h1>
+                <h1>Approve</h1>
                 <TextField
                     id="outlined-multiline-static"
                     label="Account to be approved"

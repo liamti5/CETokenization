@@ -15,6 +15,9 @@ import Checkbox from '@mui/material/Checkbox';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import Web3 from 'web3';
+import WarningIcon from '@mui/icons-material/Warning';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 
 const RegistrationForm = () => {
@@ -43,7 +46,7 @@ const RegistrationForm = () => {
       "messages": [
         {
           "role": "user",
-          "content": "Return a number in the range of 0 and 1, based on the likely hood that below name is fictional or real - 1 being fictional, 0 being real. It doesn't matter if you are uncertain, just give me a number, and only a number! \n" + name
+          "content": "Return a number in the range of 0 and 1, based on the likely hood that below name is fictional or real - 1 being fictional, 0 being real. Fictional names are names that come from movies, like Mickey Mouse or James Bond. If names from movies/series or any other entertainment are entered, you should return the number 1. It doesn't matter if you are uncertain, just give me a number, and only a number! \n" + name
         }
       ],
       "max_tokens": 3,
@@ -97,7 +100,7 @@ const RegistrationForm = () => {
     const sanctionsList = snapshot.val();
     const sanctionedNames = Object.values(sanctionsList).map(item => item.name);
     let isSanctioned = false;
-    const maxAllowedDistance = 2; // Define your own value for the maximum allowed distance
+    const maxAllowedDistance = 2;
   
     const lowerCaseName = name.toLowerCase(); // Convert user's name to lower case
 
@@ -135,11 +138,6 @@ const RegistrationForm = () => {
 
       // register hash and address in smart contract
       const hash = Web3.utils.keccak256(fullName + differentAccount);
-      console.log(hash);
-
-      console.log(recoverable);
-
-
       try {
         await contract.methods.register(hash, recoverable).send({ from: account });
       }
@@ -147,14 +145,15 @@ const RegistrationForm = () => {
         console.log(error);
       }
 
-      // setType('');
-      // setFullName('');
-      // setEmail('');
-      // setCountry('');
-      // setAddress('');
-      // setPostcode('');
-      // setCity('');
-      // setCountry('');
+      // Reset form
+      setType('');
+      setFullName('');
+      setEmail('');
+      setCountry('');
+      setAddress('');
+      setPostcode('');
+      setCity('');
+      setCountry('');
       setError(null);
       setNameError(null);
       setSuccess('Registration successful!');
@@ -168,6 +167,11 @@ const RegistrationForm = () => {
       <div className={styles.rectangle}>
         <h1>Registration</h1>
         <form onSubmit={handleSubmit} >
+        <div>
+          <p>
+            Please read our registration agreement before registering! It can be found <a href="/test.pdf" download>here</a>.
+          </p>
+        </div>
         <div>
             <p>Type</p>
             <FormControl fullWidth>
@@ -273,7 +277,7 @@ const RegistrationForm = () => {
             </FormControl>
           </div>
           <div>
-            <p>Ethereum Address</p>
+            <p>Polygon Address</p>
             <TextField
               required
               id="outlined-required"
@@ -299,6 +303,12 @@ const RegistrationForm = () => {
               value={recoverable}
               onChange={(e) => setRecoverable(e.target.checked)}
             />
+             <Tooltip title="By opting for this option, the Token Holder consents to grant partial authority over the account to the Issuer and Deputy." placement='top'>
+                <IconButton>
+                  <WarningIcon 
+                    sx={{ color: 'white' }} />
+                </IconButton>
+              </Tooltip>
           </div>
           <Button className={styles.button} type="submit" variant="contained" sx={{ width: '100%', mt: 2, mb: 2 }}>
             Register
