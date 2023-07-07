@@ -137,7 +137,7 @@ const RegistrationForm = () => {
       await set(newUser, { type, fullName, email, address, postCode, city, country, differentAccount, recoverable });
 
       // register hash and address in smart contract
-      const hash = Web3.utils.keccak256(fullName + differentAccount);
+      const hash = Web3.utils.keccak256(fullName + address);
       try {
         await contract.methods.register(hash, recoverable).send({ from: account });
       }
@@ -169,7 +169,7 @@ const RegistrationForm = () => {
         <form onSubmit={handleSubmit} >
         <div>
           <p>
-            Please read our registration agreement before registering! It can be found <a href="/test.pdf" download>here</a>.
+            Please read our registration agreement before registering! It can be found <a href="/Registration_Agreement_SCL_Professor.pdf" download>here</a>.
           </p>
         </div>
         <div>
